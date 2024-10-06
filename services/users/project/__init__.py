@@ -1,4 +1,5 @@
 import os
+import sys
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
@@ -6,7 +7,6 @@ app = Flask(__name__)
 
 app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
-
 
 db = SQLAlchemy(app)
 
@@ -21,6 +21,9 @@ class User(db.Model):
     def __init__(self, username, email):
         self.username = username
         self.email = email
+
+
+print(app.config, file=sys.stderr)
 
 
 @app.route('/users/ping', methods=['GET'])
