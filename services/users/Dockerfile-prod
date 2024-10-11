@@ -1,8 +1,10 @@
 FROM python:3.12
 
 #install environment dependencies
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends netcat-traditional && apt-get -q clean
-
+RUN apt-get update -yqq \
+    && apt-get install -yqq --no-install-recommends \
+    netcat-traditional \
+    && apt-get -q clean
 
 #set working directory
 RUN mkdir -p /usr/src/app
@@ -15,12 +17,10 @@ COPY ./requirement.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 
 #add entrypoint.sh
-COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
+COPY ./entrypoint-prod.sh /usr/src/app/entrypoint-prod.sh
 
 #add app
 COPY . /usr/src/app
 
 #run server
-CMD ["./entrypoint.sh"]
-
-CMD python manage.py run -h 0.0.0.0
+CMD ["./entrypoint-prod.sh"]
